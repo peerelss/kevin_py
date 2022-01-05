@@ -9,7 +9,7 @@ db = pymysql.connect(host='localhost',
                      password='test1234',
                      database='test_file_manager')
 int_type = 4
-key_worlds = '社区'
+key_worlds = '隨時'
 args = '%' + key_worlds + '%'
 # sql = 'select * from runoob_tbl where file_type > %d' % (int_type)
 sql = "select * from runoob_tbl where runoob_file_name like '%s'  " % args
