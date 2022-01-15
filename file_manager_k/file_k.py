@@ -19,7 +19,7 @@ db = pymysql.connect(host='localhost',
         os.rmdir(root)
         #print(root)'''
 allpath = []
-rootdir = "/media/kevin/My Passport"
+rootdir = "/media/kevin/Backup Plus/115/[7sht.me]prtd-017-c"
 
 video_0 = {'avi', 'mp4', 'mpg', 'wmv'}
 image_1 = {'jpg', 'png', 'gif'}
@@ -34,7 +34,7 @@ type_list_known = ['avi', 'mp4', 'mpg', 'wmv', 'jpg', 'png', 'gif', 'txt', 'html
 def getallfile(path):
     if r.sismember(set_name, path):
         print(" 文件夹已被扫描 %s" % (path))
-        return
+        # return
     allfilelist = os.listdir(path)
     # 遍历该文件夹下的所有目录或者文件
     for file_1 in allfilelist:
@@ -65,7 +65,7 @@ def get_type_from_name(name):
     if not '.' in str(name):
         return -1
     str_end = os.path.splitext(name)[-1][1:]
-   # r.sadd(sorted_set_type_name, str_end)
+    # r.sadd(sorted_set_type_name, str_end)
     if str_end in video_0:
         return 0
     elif str_end in image_1:
@@ -82,7 +82,7 @@ def get_type_from_name(name):
 # 将文件信息插入数据库  文件名（非空），文件路径（非空）,文件大小，描述，文件类型
 # 0-视频，1-图片 2-txt
 def insert_file_info_to_db(file_abs):
-    sql = "insert into runoob_tbl(runoob_file_name,runoob_file_name_abs,runoob_file_size,runoob_des,file_type)values " \
+    sql = "insert into runoob_tbl_a(runoob_file_name,runoob_file_name_abs,runoob_file_size,runoob_file_type,runoob_des)values " \
           "(%s, %s,%s, %s, %s)"
     str_file = os.path.basename(file_abs)
     # print(str_file)
@@ -91,7 +91,7 @@ def insert_file_info_to_db(file_abs):
     int_file_type = get_type_from_name(str_file)
     # print(str(int_file_type))
     # print('\n')
-    val_sql = (str_file, file_abs, int_file_size, os.path.dirname(file_abs), int_file_type)
+    val_sql = (str_file, file_abs, int_file_size, int_file_type, os.path.dirname(file_abs))
     cursor = db.cursor()
     try:
         cursor.execute(sql, val_sql)
