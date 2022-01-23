@@ -2,6 +2,7 @@ import sys
 import Jpg_manager
 from PyQt5.QtWidgets import QApplication, QDialog
 import requests
+from bs4 import BeautifulSoup
 
 
 class MainWindow(QDialog):
@@ -14,9 +15,16 @@ class MainWindow(QDialog):
         url_s = self.ui.lineEdit.text()
         r = requests.get(url_s)
         if r.status_code == 200:
-            self.ui.textEdit.setText(r.text)
-        else:
-            self.ui.textEdit.setText("error")
+            #self.ui.textEdit.setText(r.text)
+            print("photo url :" + url_s)
+            pic_soup = BeautifulSoup(requests.get(url_s).content, "lxml").find_all('img')
+            str_s = ''
+            for p in pic_soup:
+                result_str = (str(p['src']).replace('small', 'xl'))
+                str_s = str_s + '\n' + result_str
+                self.ui.textEdit.setText(str_s)
+                print(result_str)
+                # f.write(result_str + '\n')
 
 
 if __name__ == '__main__':

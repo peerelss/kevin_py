@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1090</width>
-    <height>723</height>
+    <width>1113</width>
+    <height>875</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>660</y>
+     <x>750</x>
+     <y>830</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -38,15 +38,8 @@
      <height>27</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>1021</width>
-     <height>561</height>
-    </rect>
+   <property name="text">
+    <string>url</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -62,7 +55,29 @@
     <string>Get_Pic</string>
    </property>
   </widget>
+  <widget class="QWebView" name="webView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>1081</width>
+     <height>751</height>
+    </rect>
+   </property>
+   <property name="url">
+    <url>
+     <string>about:blank</string>
+    </url>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

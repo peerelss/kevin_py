@@ -14,27 +14,30 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(1090, 723)
+        Dialog.resize(1113, 875)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(710, 660, 341, 32))
+        self.buttonBox.setGeometry(QtCore.QRect(750, 830, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.lineEdit = QtWidgets.QLineEdit(Dialog)
         self.lineEdit.setGeometry(QtCore.QRect(10, 30, 901, 27))
         self.lineEdit.setObjectName("lineEdit")
-        self.textEdit = QtWidgets.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(10, 70, 1021, 561))
-        self.textEdit.setObjectName("textEdit")
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton.setGeometry(QtCore.QRect(930, 30, 91, 27))
         self.pushButton.setObjectName("pushButton")
+        self.webView = QtWebKitWidgets.QWebView(Dialog)
+        self.webView.setGeometry(QtCore.QRect(10, 70, 1081, 751))
+        self.webView.setUrl(QtCore.QUrl("about:blank"))
+        self.webView.setObjectName("webView")
 
         self.retranslateUi(Dialog)
-        self.pushButton.clicked.connect(Dialog.get_re_images)
+        self.pushButton.clicked.connect(Dialog.accept)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.lineEdit.setText(_translate("Dialog", "url"))
         self.pushButton.setText(_translate("Dialog", "Get_Pic"))
+from PyQt5 import QtWebKitWidgets
