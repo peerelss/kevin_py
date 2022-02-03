@@ -32,7 +32,7 @@ class Ui_Dialog(object):
         self.webView.setObjectName("webView")
 
         self.retranslateUi(Dialog)
-        self.pushButton.clicked.connect(Dialog.accept)
+        self.pushButton.clicked.connect(Dialog.load_url)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
