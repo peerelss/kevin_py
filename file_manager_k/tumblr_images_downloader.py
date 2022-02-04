@@ -37,7 +37,6 @@ def get_url_from_file(t_tumblr):
         temp = temp + 1
         str_line = str(line).replace('\n', '')
         if 'tumblr' in str_line:
-            # print(str_line)
             print('一共 %d 行,当前 %d ' % (file_length, temp))
             download_tumblr_jpg(str_line, file_dir_name)
     r_redis.sadd(redis_tumblr_dir, t_tumblr)
