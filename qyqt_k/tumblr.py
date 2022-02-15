@@ -29,15 +29,16 @@ def get_file_length():
         while buffer:
             file_length += buffer.count('\n')
             buffer = read_file(1024 * 1024)
-    if (file_length != 0):
+    if file_length != 0:
         file_length += 1
     print(str(file_length))
 
 
 if __name__ == "__main__":
     # get_file_length()
-    file_dir = '/media/kevin/Backup/tumblr(2)'
+    file_dir = '/media/kevin/Backup/0909'
     if os.path.isdir(file_dir):
         file_list = os.listdir(file_dir)
         for f in file_list:
-            print(str(f))
+            if '115' in str(f):
+                print(str(f))
