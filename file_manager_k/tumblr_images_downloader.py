@@ -51,7 +51,8 @@ def download_tumblr_jpg(*jpg_url):
         print('%s 存在 from disk ' % file_name_t)
     elif r_redis.sismember(redis_tumblr_dir_file_from_url, file_name_t):
         print('%s 经被下载过 ' % jpg_url[0])
-    elif r_redis.sismember(redis_tumblr_dir_file_redirected, file_name_t):
+    elif r_redis.sismember(redis_tumblr_dir_file_redirected, file_name_t) or r_redis.sismember(
+            redis_tumblr_dir_file_redirected, jpg_url[0]):
         print('%s  已经被重定向 from redis' % jpg_url[0])
         r_redis.incr(redis_tumblr_dir_file_redirected_incr)
     elif os.path.exists(file_name_full) or os.path.exists(
@@ -68,6 +69,7 @@ def download_tumblr_jpg(*jpg_url):
                 file.write(html.content)
             print('%s  正在下载ing  from network' % jpg_url[0])
             r_redis.sadd(redis_tumblr_dir_file_from_url, file_name_t)
+            r_redis.sadd(redis_tumblr_dir_file_from_url, jpg_url[0])
             r_redis.set(file_name_t, file_name_full)
 
 
