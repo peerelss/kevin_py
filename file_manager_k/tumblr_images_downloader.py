@@ -95,12 +95,14 @@ def get_file_length(file):
 
 
 if __name__ == "__main__":
-    if os.path.isdir(url_resource):
-        t_file = os.listdir(url_resource)
-        for t in t_file:
-            if str(t).endswith('txt') and ('json' in str(t) or 'tumblr' in str(t)):
-                print(str(t))
-                if r_redis.sismember(redis_tumblr_dir_saved, str(t)):
-                    print("已经下载过")
-                else:
-                    get_url_from_file(str(t))
+    get_url_from_file("updates.reflectivedesire.com_json1.txt")
+    # if os.path.isdir(url_resource):
+    #     t_file = os.listdir(url_resource)
+    #     get_url_from_file('willleary13_json1.txt')
+    #     for t in t_file:
+    #         if str(t).endswith('txt') and ('json' in str(t) or 'tumblr' in str(t)):
+    #             print(str(t))
+    #             if r_redis.sismember(redis_tumblr_dir_saved, str(t)):
+    #                 print("已经下载过")
+    #             else:
+    #                 get_url_from_file(str(t))
