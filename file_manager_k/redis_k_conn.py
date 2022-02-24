@@ -44,18 +44,15 @@ def delete_the_same_file():
 
 
 # /media/kevin/Backup/images/61zonevacbed/tumblr_od1d2frNia1rrho82o1_1280.jpg
-def delete_test():
-    str_key = 'tumblr_od1d2frNia1rrho82o1_1280.jpg'
-    if r_redis.exists(str_key):
-        str = r_redis.get(str_key)
-        print(str)
-        if str == '/media/kevin/Backup/images/61zonevacbed/tumblr_od1d2frNia1rrho82o1_1280.jpg':
-            print('same one')
-        else:
-            print('different one')
+def delete_test(file_full_path):  # 删除此文件夹下所有未下载完毕的文件
+    list_dir = os.listdir(file_full_path)
+    for f_file in list_dir:
+        f_file_path = os.path.join(file_full_path, f_file)
 
 
 if __name__ == "__main__":
-    #delete_the_same_file()
+    # delete_the_same_file()
     # delete_test()
     print(r_redis.get('redis_set_tumblr_dir_file_redirected_incr'))
+    if (9999 + 1) % 1000 == 0:
+        print('00')
