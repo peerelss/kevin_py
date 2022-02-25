@@ -28,7 +28,6 @@ file_path = 'zirtamail'
 
 def download_tumblr_jpg(*jpg_url):
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
-
     file_name_full = url_target + file_path + '/' + file_name_t
     if r_redis.exists(file_name_t) and os.path.exists(r_redis.get(file_name_t)):
         print('%s 存在 from disk ' % r_redis.get(file_name_t))
@@ -77,11 +76,8 @@ def init_list():
 
 
 if __name__ == "__main__":
-    current_file = 'tryitnowtoday_json1.txt'
+    current_file = 'stealthbinder_json1.txt'
     file_name = file_name + current_file
     file_path = current_file.split('_')[0]
     init_list()
-    # if os.path.isdir('/media/kevin/Backup/tumblr(2)'):
-    #     file_list = os.listdir('/media/kevin/Backup/tumblr(2)')
-    #     for f_file in file_list:
-    #         print(f_file)
+
