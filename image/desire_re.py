@@ -4,7 +4,8 @@ import os
 from bs4 import BeautifulSoup
 import redis
 
-file_x = 'result_1130.txt'
+file_str_list = []
+url_resource = '/media/kevin/Backup/MP4/'
 
 
 def get_pic_link_from_begin():
@@ -24,9 +25,12 @@ def get_mp4_link_from_begin(url):
         href = str(p['href'])
         if href.startswith('/videos/'):
             strs = href.split('/')
-            #print(strs[2])
-            print('https://4k.reflectivedesire.com/' + strs[2] + '.mp4')
-            # get_pic_from_link('https://reflectivedesire.com' + p['href'])
+            # print(strs[2])
+            if (strs[2] + '.mp4' in file_str_list):
+                pass
+            else:
+                print('https://hd.reflectivedesire.com/' + strs[2] + '.mp4')
+        # get_pic_from_link('https://reflectivedesire.com' + p['href'])
 
 
 def get_pic_from_link(url):
@@ -42,6 +46,10 @@ def get_mp4_from_link():
 
 
 if __name__ == "__main__":
+    if os.path.isdir(url_resource):
+        file_list = os.listdir(url_resource)
+        for f_file in file_list:
+            file_str_list.append(str(f_file))
     # get_pic_link_from_begin()
-    #get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/shorts/')
-    get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/scenes/')
+    get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/shorts/')
+    #get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/scenes/')

@@ -4,6 +4,11 @@ import requests
 import os
 import redis
 
+import time
+import datetime
+
+import os
+
 '''
 每一个文件的下载链接全部完成之后再开启下一个任务
 '''
@@ -12,7 +17,7 @@ import time
 
 urls = [3, 2, 4]  # 并不是真的url
 urls_s = [[3, 2, 4], [1, 7, 5], [9, 8, 1]]
-url_resource = '/media/kevin/Backup/tumblr(2)/'
+url_resource = '/media/kevin/Backup/MP4/'
 
 
 # 参数times用来模拟网络请求的时间
@@ -59,25 +64,32 @@ import time
 # 参数times用来模拟网络请求的时间
 def get_html(times):
     time.sleep(times)
-    #print("get page {}s finished".format(times))
+    # print("get page {}s finished".format(times))
     return times
 
 
 urls = [3, 2, 4]  # 并不是真的url
 urls_s = [[3, 2, 4, 2, 4], [1, 7, 5, 2, 4], [1, 1, 1, 2, 4]]
 
-if __name__ == "__main__":
-    executor = ThreadPoolExecutor(max_workers=6)
-    for urls in urls_s:
-        print("beginning")
-        all_task = [executor.submit(get_html, url) for url in urls]
-        for future in as_completed(all_task):
-            data = future.result()
-            print("in main: get page {}s success".format(data))
-        print('end')
+
+# if __name__ == "__main__":
+#     executor = ThreadPoolExecutor(max_workers=6)
+#     for urls in urls_s:
+#         print("beginning")
+#         all_task = [executor.submit(get_html, url) for url in urls]
+#         for future in as_completed(all_task):
+#             data = future.result()
+#             print("in main: get page {}s success".format(data))
+#         print('end')
+
+def get_FileSize(filePath):
+    fsize = os.path.getsize(filePath)
+    fsize = fsize / float(102)
+    return round(fsize, 2)
+
 
 if __name__ == "__main__":
-    if os.path.isdir(url_resource) and False:
+    if os.path.isdir(url_resource):
         file_list = os.listdir(url_resource)
         for f_file in file_list:
-            init_file(f_file)
+            print(f_file)

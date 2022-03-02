@@ -22,6 +22,7 @@ redis_tumblr_dir_file_from_url = 'redis_set_tumblr_dir_file'  # 保存所有已�
 redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_incr'  # 记录多少个被重定向
 
 
+
 def get_url_from_file(t_tumblr):
     file_length = get_file_length(url_resource + '/' + t_tumblr)
     file_dir_name = str(t_tumblr).split('_')[0]
@@ -50,6 +51,7 @@ def get_url_from_file(t_tumblr):
 
 
 def download_tumblr_jpg(*jpg_url):
+    print("当前第 %d 行" % jpg_url[1])
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
     file_name_full = url_target + jpg_url[1] + '/' + file_name_t
     if r_redis.exists(file_name_t) and os.path.exists(r_redis.get(file_name_t)):
@@ -95,14 +97,12 @@ def get_file_length(file):
 
 
 if __name__ == "__main__":
-    get_url_from_file("updates.reflectivedesire.com_json1.txt")
-    # if os.path.isdir(url_resource):
-    #     t_file = os.listdir(url_resource)
-    #     get_url_from_file('willleary13_json1.txt')
-    #     for t in t_file:
-    #         if str(t).endswith('txt') and ('json' in str(t) or 'tumblr' in str(t)):
-    #             print(str(t))
-    #             if r_redis.sismember(redis_tumblr_dir_saved, str(t)):
-    #                 print("已经下载过")
-    #             else:
-    #                 get_url_from_file(str(t))
+    if os.path.isdir(url_resource):
+        t_file = os.listdir(url_resource)
+        for t in t_file:
+            if str(t).endswith('txt') and ('json' in str(t) or 'tumblr' in str(t)):
+                print(str(t))
+                if r_redis.sismember(redis_tumblr_dir_saved, str(t)):
+                    print("已经下载过")
+                else:
+                    get_url_from_file(str(t))
