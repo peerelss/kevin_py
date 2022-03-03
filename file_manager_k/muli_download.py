@@ -22,14 +22,14 @@ redis_tumblr_dir_saved = "redis_set_tumblr_dir"  # 保存所有已经下载过�
 redis_tumblr_dir_file_redirected = 'redis_set_tumblr_dir_file_redirected'  # 保存所有被重定向的url
 redis_tumblr_dir_file_from_url = 'redis_set_tumblr_dir_file'  # 保存所有已被下载的url
 redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_incr'  # 记录多少个被重定向
-file_name = r'/media/kevin/Backup/tumblr_txt_all3/'
+file_name = r'/media/kevin/Backup/tumblr_txt_all2/'
 file_path = 'zirtamail'
 
 
 def download_tumblr_jpg(*jpg_url):
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
     file_name_full = url_target + file_path + '/' + file_name_t
-    if r_redis.exists(file_name_t) and os.path.exists(r_redis.get(file_name_t)):
+    if r_redis.exists(file_name_t):
         print('%s 存在 from disk ' % r_redis.get(file_name_t))
     elif r_redis.sismember(redis_tumblr_dir_file_from_url, file_name_t):
         print('%s 经被下载过 ' % jpg_url[0])
@@ -70,14 +70,13 @@ def init_list():
         pass
     else:
         os.mkdir(file_dir_path)
-    executor = ThreadPoolExecutor(max_workers=8)
+    executor = ThreadPoolExecutor(max_workers=4)
     for i in list_of_lists:
         executor.submit(download_tumblr_jpg, i)
 
 
 if __name__ == "__main__":
-    current_file = 'sex-n-stunners_tumblr_.txt'
+    current_file = 'nauticusbondage_tumblr_.txt'
     file_name = file_name + current_file
     file_path = current_file.split('_')[0]
     init_list()
-

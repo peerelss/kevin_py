@@ -3,7 +3,12 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import os
 import redis
-
+# redis 相关的关键字
+r_redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
+redis_tumblr_dir_saved = "redis_set_tumblr_dir"  # 保存所有已经下载过的tumblr的txt的文件名
+redis_tumblr_dir_file_redirected = 'redis_set_tumblr_dir_file_redirected'  # 保存所有被重定向的url
+redis_tumblr_dir_file_from_url = 'redis_set_tumblr_dir_file'  # 保存所有已被下载的url
+redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_incr'  # 记录多少个被重定向
 import time
 import datetime
 
@@ -89,7 +94,7 @@ def get_FileSize(filePath):
 
 
 if __name__ == "__main__":
-    if os.path.isdir(url_resource):
-        file_list = os.listdir(url_resource)
-        for f_file in file_list:
-            print(f_file)
+    if r_redis.sadd(redis_tumblr_dir_saved,'mr-grumpfish_tumblr_.txt'):
+        print('exist')
+    else:
+        print('no')
