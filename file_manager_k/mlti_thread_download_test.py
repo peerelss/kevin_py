@@ -22,7 +22,7 @@ import time
 
 urls = [3, 2, 4]  # 并不是真的url
 urls_s = [[3, 2, 4], [1, 7, 5], [9, 8, 1]]
-url_resource = '/media/kevin/Backup/MP4/'
+url_resource = '/media/kevin/Backup/tumblr_txt_all2/'
 
 
 # 参数times用来模拟网络请求的时间
@@ -94,7 +94,8 @@ def get_FileSize(filePath):
 
 
 if __name__ == "__main__":
-    if r_redis.sadd(redis_tumblr_dir_saved,'mr-grumpfish_tumblr_.txt'):
-        print('exist')
-    else:
-        print('no')
+    if os.path.exists(url_resource) and os.path.isdir(url_resource):
+        list_fi=os.listdir(url_resource)
+        for i in list_fi:
+            if 'bdsmlr' in str(i):
+                print(str(i))
