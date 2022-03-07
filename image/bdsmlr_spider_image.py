@@ -35,32 +35,35 @@ headers = {
 }
 
 data1 = {
-    'scroll': '20',
-    'timenow': '2022-03-05 22:16:51',
-    'last': '475716261'
+    'scroll': '0',
+    'timenow': '2022-03-07 06:54:20',
+    'last': '475129810'
 }
 
 
 def get_pic_url_from_url(data):
-    print(data['last'] + "   " + data['scroll'])
-    response = requests.post('https://happybondageclub.bdsmlr.com/infinitepb2/happybondageclub', headers=headers,
+    print(data['last'] + "   " + str(data['scroll']))
+    response = requests.post('https://charlotte-ava22.bdsmlr.com/infinitepb2/charlotte-ava22', headers=headers,
                              cookies=cookies,
                              data=data)
     soup_jpg = BeautifulSoup(response.content, 'lxml').find_all('img')
-    f = open('/media/kevin/Backup/bdsmlr/' + 'happybondageclub_bdsmlr.txt', 'a')
+    f = open('/media/kevin/Backup/bdsmlr/' + 'charlotte-ava22'.replace('-', '_') + '__bdsmlr.txt', 'a')
+    f.write(data['last'] + " " + str(data['scroll']) + '\n')
     for s in soup_jpg:
-        f.write(s['src'] + '\n')
-        print(s['src'])
+        if 'avatar' in str(s['src']):
+            pass
+        else:
+            f.write(s['src'] + '\n')
+            print(s['src'])
     f.close()
     soup = BeautifulSoup(response.content, 'lxml').find_all("div", {"class": "countinf"})
-
-    data['scroll'] = int(data['scroll']) + 20
-    data['last'] = soup[-1]['data-id']
-    data['timenow'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    if len(soup_jpg) < 1:
-        return False
-    else:
+    if len(soup) > 0:
+        data['scroll'] = int(data['scroll']) + 20
+        data['last'] = soup[-1]['data-id']
+        data['timenow'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         return True
+    else:
+        return False
 
 
 def get_next_page_from_url():

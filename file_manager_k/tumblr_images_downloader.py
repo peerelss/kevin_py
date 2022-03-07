@@ -14,8 +14,8 @@ import os
 import redis
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 
-url_resource = '/media/kevin/Backup/tumblr_txt_all2/'
-url_target = '/media/kevin/Backup/images2/'
+url_resource = '/media/kevin/Backup/tumblr_txt_all3/'
+url_target = '/media/kevin/Backup/images4/'
 current_file = "default "
 # redis 相关的关键字
 r_redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
