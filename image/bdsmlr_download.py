@@ -14,7 +14,7 @@ import os
 import redis
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 
-url_resource = '/media/kevin/Backup/cfake/'
+url_resource = '/media/kevin/Backup/bdsmlr/'
 url_target = '/media/kevin/Backup/image_bdsmlr/'
 current_file = "default "
 # redis 相关的关键字
@@ -24,6 +24,8 @@ redis_bdsmlr_dir_file_from_url = 'redis_set_tumblr_dir_file'  # 保存所有已�
 
 
 def download_tumblr_jpg(*jpg_url):
+    if 'avatar' in jpg_url[0]:
+        return
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
     file_name_full = url_target + file_path + '/' + file_name_t
     print(current_file)
