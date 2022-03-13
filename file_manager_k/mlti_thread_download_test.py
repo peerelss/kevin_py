@@ -13,7 +13,7 @@ redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_in
 import time
 import datetime
 
-url_resource = '/media/kevin/Backup/xiepe/'
+url_resource = '/media/kevin/Backup/tumblr_txt_all3/'
 
 import os
 import redis
@@ -51,8 +51,6 @@ def get_FileSize(filePath):
 
 if __name__ == "__main__":
     if os.path.exists(url_resource) and os.path.isdir(url_resource):
-        list_fi = os.listdir(url_resource)
+        list_fi = sorted(os.listdir(url_resource))
         for i in list_fi:
-            print(str(i))
-            if os.path.isdir(url_resource + str(i)):
-                find_if_multi_file(url_resource + str(i))
+            print(str(i) + '  ' + str(get_FileSize(url_resource + str(i))))

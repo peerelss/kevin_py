@@ -1,66 +1,58 @@
-import sys
-import requests
-import os
+# -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
-
-index_url = 'https://reflectivedesire.com/videos/categories/scenes/'
-de_url1 = 'https://reflectivedesire.com/photos/desert-varnish/'
-file_x = 'result_1130.txt'
+import time
 
 
-def find_jpg_doll(url):
-    print("photo url :" + url)
-    pic_soup = BeautifulSoup(requests.get(url).content, "lxml").find_all('img')
-    for p in pic_soup:
-        result_str = (str(p['src']).replace('small', 'xl'))
-        print(result_str)
-        #f.write(result_str + '\n')
+import requests
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0',
+    'Accept': '*/*',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Connection': 'keep-alive',
+    'Referer': 'https://tumblrgallery.xyz/tumblrblog/gallery/166593/2.html',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-origin',
+    'TE': 'trailers',
+}
+
+params = (
+    ('page', '1'),
+    ('action', 'blog_gallery'),
+    ('id', '166593'),
+)
 
 
-def find_jpg(de_url):
-    print("photo index :" + de_url)
-    pic_soup = BeautifulSoup(requests.get(de_url).content, "lxml").select('.responsive-image')
-    for p in pic_soup:
-        # print(p)
-        if 'data-srcset' in str(p):
-            r = str(p['data-srcset'])
-            print(r[0:r.index('xl.jpg') + 6])
+
+def get_pic_url_from_url(data):
+    print(data['last'] + "   " + str(data['scroll']))
+    response = requests.get('https://tumblrgallery.xyz/ajax.php', headers=headers, params=params)
+    soup_jpg = BeautifulSoup(response.content, 'lxml').find_all('img')
+    f = open('/media/kevin/Backup/bdsmlr/' + 'charlotte-ava22'.replace('-', '_') + '__bdsmlr.txt', 'a')
+    f.write(data['last'] + " " + str(data['scroll']) + '\n')
+    for s in soup_jpg:
+        if 'avatar' in str(s['src']):
+            pass
+        else:
+            f.write(s['src'] + '\n')
+            print(s['src'])
+    f.close()
+    soup = BeautifulSoup(response.content, 'lxml').find_all("div", {"class": "countinf"})
+    if len(soup) > 0:
+        data['page'] = int(data['scroll']) + 1
+        data['last'] = soup[-1]['data-id']
+        return True
+    else:
+        return False
 
 
-def find_jpg_index(url):
-    pic_link = BeautifulSoup(requests.get(url).content, "lxml").find_all('a')
-    for link in pic_link:
-        link_str = str(link.get('href'))
-        if 'videos' in link_str and 'sort=chrono' in link_str:
-            print(link_str)
-            find_jpg('https://reflectivedesire.com' + link_str)
+def get_next_page_from_url():
+    pass
 
 
-def find_video_index(url):
-    pic_link = BeautifulSoup(requests.get(url).content, "lxml").find_all('a')
-    for link in pic_link:
-        link_str = str(link.get('href'))
-        if 'videos' in link_str:
-            print(link_str)
-        # find_jpg('https://reflectivedesire.com' + link_str)
-
-
-'''从主页里拉去详细页的地址'''
-
-
-def find_jpg_index_2(url_48):
-    pic_link = BeautifulSoup(requests.get(url_48).content, "lxml").find_all('a')
-    for link in pic_link:
-        link_str = str(link.get('href'))
-        if 'photos' in link_str:
-            find_jpg_doll('https://reflectivedesire.com' + link_str)
-
-
-# find_video_index(index_url)
-find_jpg_doll('https://reflectivedesire.com/photos/red-filter/')
-'''f = open(file_x, 'a')
-for i in range(1, 9):
-    index_str = str(i)
-    url = 'https://reflectivedesire.com/photos/?sort=special-blend&page=INDEX&as-fragment=true'
-    find_jpg_index_2(url.replace("INDEX", index_str))
-f.close()'''
+if __name__ == "__main__":
+    while get_pic_url_from_url(params):
+        pass
