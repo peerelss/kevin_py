@@ -1,7 +1,7 @@
 # -*- coding: UTF8 -*-
 import os
 import cmath
-
+import redis
 
 # 连续子序列最大和
 
@@ -36,9 +36,6 @@ def get_m_sum(nums):
     return max(nums)
 
 
-r = []
-
-
 def get_nums_by_tar(con, target):
     if target == 0:
         print(r)
@@ -53,7 +50,15 @@ def get_nums_by_tar(con, target):
 
 def get_nums_by_target(candidates, target):
     get_nums_by_tar(candidates, target)
+import redis
 
+# 创建一个redis sorted set 来保存所有的文件类型
+sorted_set_type_name = 'redis_file_type_kevin_6'
+set_name = 'redis_file_dir_history'  # 记录已经扫描过得文件夹历史
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 if __name__ == '__main__':
-    get_nums_by_target([2, 3, 6, 7], 7)
+    file_dir=r'C:\Users\kevin\Downloads\tumblr_txt_all3'
+    if os.path.exists(file_dir):
+        for f in sorted(os.listdir(file_dir)):
+            print(f)

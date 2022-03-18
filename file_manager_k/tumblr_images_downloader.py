@@ -15,7 +15,7 @@ import redis
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 
 url_resource = '/media/kevin/Backup/tumblr_txt_all3/'
-url_target = '/media/kevin/Backup/images6/'
+url_target = '/media/kevin/Backup/images4/'
 current_file = "default "
 # redis 相关的关键字
 r_redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
@@ -28,23 +28,26 @@ redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_in
 def download_tumblr_jpg(*jpg_url):
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
     file_name_full = url_target + file_path + '/' + file_name_t
+    print(current_file)
     if r_redis.exists(file_name_t):
-        pass
+        print('%s 存在 from disk ' % r_redis.get(file_name_t))
     elif r_redis.sismember(redis_tumblr_dir_file_from_url, file_name_t):
-        pass
+        print('%s 经被下载过 ' % jpg_url[0])
     elif r_redis.sismember(redis_tumblr_dir_file_redirected, file_name_t) or r_redis.sismember(
             redis_tumblr_dir_file_redirected, jpg_url[0]):
+        print('%s  已经被重定向 from redis' % file_name_t)
         r_redis.incr(redis_tumblr_dir_file_redirected_incr)
-    elif os.path.exists(file_name_full):
-        pass
+    elif os.path.exists(file_name_full) or os.path.exists(
+            file_name_full.replace('daddywantskitten0', 'daddywantskitten')):
+        print('%s 已存在' % jpg_url[0])
     else:
         html = requests.get(jpg_url[0])
         if html.history:
+            print('%s  已经被重定向 from network' % jpg_url[0])
             r_redis.incr(redis_tumblr_dir_file_redirected_incr)
             r_redis.sadd(redis_tumblr_dir_file_redirected, jpg_url[0])
             r_redis.sadd(redis_tumblr_dir_file_redirected, file_name_t)
         else:
-            print(file_path)
             with open(file_name_full, "wb") as file:
                 file.write(html.content)
             print('%s  正在下载ing  from network' % jpg_url[0])
@@ -69,6 +72,8 @@ def init_list(*f_name):
     else:
         os.mkdir(file_dir_path)
     executor = ThreadPoolExecutor(max_workers=4)
+    # for i in list_of_lists:
+    #    executor.submit(download_tumblr_jpg, i)
     all_task = [executor.submit(download_tumblr_jpg, (i)) for i in list_of_lists]
     wait(all_task, return_when=ALL_COMPLETED)
     r_redis.sadd(redis_tumblr_dir_saved, str(f_name[0]))
@@ -76,7 +81,7 @@ def init_list(*f_name):
 
 if __name__ == "__main__":
     if os.path.exists(url_resource) and os.path.isdir(url_resource):
-        for i_file in (reversed(sorted(os.listdir(url_resource)))):
+        for i_file in os.listdir(url_resource):
             current_file = i_file
             print(current_file)
             file_name = url_resource + current_file
@@ -85,5 +90,6 @@ if __name__ == "__main__":
                                  str(i_file)) or r_redis.sismember(redis_tumblr_dir_saved, str(file_name)):
                 print("已经下载过 " + str(i_file))
             else:
+
                 file_path = current_file.split('_')[0]
                 init_list(file_name, file_path)
