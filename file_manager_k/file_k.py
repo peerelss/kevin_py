@@ -33,7 +33,7 @@ type_list_known = ['avi', 'mp4', 'mpg', 'wmv', 'jpg', 'png', 'gif', 'txt', 'html
 
 def getallfile(path):
     if r.sismember(set_name, path):
-        print(" 文件夹已被扫描 %s" % (path))
+        print(" 文件夹已被扫描 %s" % path)
         # return
     allfilelist = os.listdir(path)
     # 遍历该文件夹下的所有目录或者文件

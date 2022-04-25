@@ -14,8 +14,8 @@ import os
 import redis
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 
-url_resource = '/media/kevin/Backup/tumblr_txt_all3/'
-url_target = '/media/kevin/Backup/images4/'
+url_resource = r'C:\Users\kevin\Downloads\tumblr_txt_all3\\'
+url_target = r'D:\image\\'
 current_file = "default "
 # redis 相关的关键字
 r_redis = redis.Redis(host='localhost', port=6379, decode_responses=True)
@@ -27,7 +27,7 @@ redis_tumblr_dir_file_redirected_incr = 'redis_set_tumblr_dir_file_redirected_in
 
 def download_tumblr_jpg(*jpg_url):
     file_name_t = str(jpg_url[0]).split('/')[-1]  # 文件名
-    file_name_full = url_target + file_path + '/' + file_name_t
+    file_name_full = url_target + current_file + '/' + file_name_t
     print(current_file)
     if r_redis.exists(file_name_t):
         print('%s 存在 from disk ' % r_redis.get(file_name_t))
@@ -80,16 +80,14 @@ def init_list(*f_name):
 
 
 if __name__ == "__main__":
-    if os.path.exists(url_resource) and os.path.isdir(url_resource):
-        for i_file in os.listdir(url_resource):
-            current_file = i_file
-            print(current_file)
-            file_name = url_resource + current_file
-
-            if r_redis.sismember(redis_tumblr_dir_saved,
-                                 str(i_file)) or r_redis.sismember(redis_tumblr_dir_saved, str(file_name)):
-                print("已经下载过 " + str(i_file))
-            else:
-
-                file_path = current_file.split('_')[0]
-                init_list(file_name, file_path)
+    file_dir = r'C:\Users\kevin\PycharmProjects\kevin_py\file_manager_k\txt_list.txt'
+    a = open(file_dir, 'r')
+    list_of_lists = []
+    for line in a:
+        stripped_line = line.strip()
+        if stripped_line:
+            list_of_lists.append(stripped_line)
+    a.close()
+    for i in list_of_lists:
+        current_file=str(i).split('_')[0]
+        init_list(url_resource+str(i).split(' ')[0], str(i).split('_')[0])
