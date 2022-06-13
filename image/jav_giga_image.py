@@ -45,7 +45,7 @@ headers = {
     # 'Cookie': 'WSLB=www1; PHPSESSID=is6j7nst0pp470tae8n69aaoet; old_check=yes; layout=jpn; giga_footstamp=6824',
     'Upgrade-Insecure-Requests': '1',
     'Sec-Fetch-Dest': 'document',
-    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Mode': 'navig![](../reading.png)ate',
     'Sec-Fetch-Site': 'same-origin',
     'Sec-Fetch-User': '?1',
 }

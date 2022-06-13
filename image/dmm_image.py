@@ -83,7 +83,20 @@ def get_url_from_maker(url):
             get_detail_from_url('https://www.mgstage.com' + a_h)
 
 
+def get_dmm_cover():
+    pass
+
+
+url_temp = 'https://pics.dmm.co.jp/mono/movie/adult/INDEX/INDEXpl.jpg'
+
 if __name__ == '__main__':
-    for i in range(1, 14):
-        get_url_from_maker(
-            "https://www.mgstage.com/search/cSearch.php?maker[]=ラグジュTV_0&search_word=&type=top&page=" + str(i))
+    index_str = ""
+    for i in range(1, 100):
+        if i < 10:
+            index_str = '00' + str(i)
+        elif 9 < i < 100:
+            index_str = '0' + str(i)
+        else:
+            index_str = str(i)
+        index_str = 'jufd-' + index_str
+        print(url_temp.replace('INDEX', index_str))

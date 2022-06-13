@@ -45,12 +45,12 @@ def find_detail_from_movie(url):
     a_soup = pic_soup.find_all('a', href=True)
     av_jpg = ''
     av_title = ''
-    av_maker = '大洋図書'
+    av_maker = 'シネマジック '
     for p in a_soup:
         href = p['href']
         if 'sp_images' in href:
             av_jpg = ('https://pureadult.co.jp' + href)
-    av_title = (pic_soup.find('title').string.split(' ')[-1])
+    av_title = pic_soup.find('title').string
     av_id = av_jpg.split('/')[-1].replace('.jpg', '')
     av_item = AvItem(av_maker, av_jpg, av_title, av_id)
     print(av_item.__dict__)
@@ -60,8 +60,8 @@ def find_detail_from_movie(url):
 
 if __name__ == "__main__":
     if True:
-        for i in range(1, 14):
-            url_begin = 'https://pureadult.co.jp/user_data/sp_artist_product.php?mid=71&pageID=' + str(i)
+        for i in range(1, 56):
+            url_begin = 'https://pureadult.co.jp/user_data/sp_artist_product.php?mid=164&pageID=' + str(i)
             find_movie_from_url(url_begin)
     # find_detail_from_movie(
     #  'https://pureadult.co.jp/user_data/sp_artist_product_detail.php?pid=126023773000&mid=71&bck=%2Fuser_data%2Fsp_artist_product.php%3Fmid%3D71%26pageID%3D2')

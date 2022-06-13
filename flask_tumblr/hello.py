@@ -12,6 +12,7 @@ mydb = myclient["av_db"]
 mycol = mydb['av_items_thumb']
 mycol2 = mydb['av_items_thumb_jav_bus']
 mycol3 = mydb['av_items_thumb_jav_luxu']
+mycol_en = mydb['av_items_thumb_en']
 
 
 @app.route('/')
@@ -53,13 +54,47 @@ def show_star_name_no(star_name, page_size=0, page_no=0):
     result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0}).limit(page_size).skip(skip)
     return dumps(list(result_x))
 
-@app.route('/jav/<maker_name>/<int:page_size>/<int:page_no>')
-def show_maker_no(maker_name, page_size=0, page_no=0):
+
+@app.route('/jav/<name>/<int:page_size>/<int:page_no>')
+def show_maker_or_star(name, page_size=0, page_no=0):
+    skip = page_size * (page_no - 1)
+    myquery = {"av_maker": name}
+    myquery1 = {"av_star": name}
+    if mycol.count_documents(myquery) > 0:
+        result_x = mycol.find(myquery,
+                              {'av_id': 1, 'av_jpg': 1, 'av_title': 1, 'av_star': 1, "av_maker": 1, "_id": 0}).limit(
+            page_size).skip(skip)
+        return dumps(list(result_x))
+    elif mycol.count_documents(myquery1) > 0:
+        result_x = mycol.find(myquery1,
+                              {'av_id': 1, 'av_jpg': 1, 'av_title': 1, 'av_star': 1, "av_maker": 1, "_id": 0}).limit(
+            page_size).skip(skip)
+        return dumps(list(result_x))
+    else:
+        result_x = mycol_en.find(myquery,
+                                 {'av_id': 1, 'av_jpg': 1, 'av_title': 1, 'av_star': 1, "av_maker": 1, "_id": 0}).limit(
+            page_size).skip(skip)
+        return dumps(list(result_x))
+
+
+@app.route('/jav_en/<maker_name>/<int:page_size>/<int:page_no>')
+def show_maker_en(maker_name, page_size=0, page_no=0):
     # print('page_size : ' + page_size + " page_no : " + page_no)
     skip = page_size * (page_no - 1)
     myquery = {"av_maker": maker_name}
-    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0}).limit(page_size).skip(skip)
+    result_x = mycol_en.find(myquery, {'av_id': 1, 'av_jpg': 1, 'av_title': 1, "_id": 0}).limit(page_size).skip(skip)
     return dumps(list(result_x))
+
+
+@app.route('/jav_en/<maker_name>/count')
+def show_maker_count(maker_name):
+    myquery = {"av_maker": maker_name}
+    myquery1 = {'av_star': maker_name}
+    result_x = mycol.count_documents(myquery)
+    if result_x > 0:
+        return dumps(result_x)
+    else:
+        return dumps(mycol_en.count_documents(myquery1))
 
 
 @app.route('/user/<username>')

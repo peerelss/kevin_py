@@ -12,7 +12,7 @@ redis_tumblr_dir_file_from_url = 'redis_set_jav_land_url_thumbs_en'  # 保存所
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["av_db"]
 mycol_en = mydb['av_items_thumb_en']
-
+mycol = mydb['av_items_thumb']
 
 class AvItem:
     def __init__(self, av_star, av_maker, av_tags, av_jpg, av_title, av_id, av_thumbs, av_series):
@@ -32,7 +32,7 @@ def get_jpg_list_from_url(url):
     pic_soup = BeautifulSoup(requests.get(url).content, "lxml").find_all('a', href=True)
     for p in pic_soup:
         href = p['href']
-        if str(href).startswith('/en/movie'):
+        if str(href).startswith('/ja/movie'):
             is_going = True
             get_jpg_url_from_url('https://jav.land' + p['href'])
     return is_going
@@ -65,14 +65,11 @@ def get_jpg_url_from_url(url):
             av_thumbs.append(str(href))
         if str(href).startswith("../series/"):
             av_series = p.text
-    print(av_thumbs)
     av_title = (pic_content.find('title').string.replace("- JAV.Land", ''))
     av_id = av_title.split(" ")[0]
     soup_jpg = pic_content.find_all('img')[0]['src']
-    print(soup_jpg)
     av_item = AvItem(av_star, av_maker, av_tags, soup_jpg, av_title, av_id, av_thumbs, av_series)
-    x = mycol_en.insert_one(av_item.__dict__)
-    print(x.inserted_id)
+    x = mycol.insert_one(av_item.__dict__)
     r_redis.sadd(redis_tumblr_dir_file_from_url, url)
 
 
@@ -84,7 +81,7 @@ def search_av_item():
 
 
 if __name__ == "__main__":
-    url_begin = 'https://jav.land/en/maker/zlwjqp.html'
+    url_begin = 'https://jav.land/ja/star/j7m54x.html'
     if True:
         index = 1
         while get_jpg_list_from_url(url_begin + '?page=' + str(index)):
