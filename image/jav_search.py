@@ -26,7 +26,7 @@ av_id = 'Jukujo-' + str(    7578      )
 
 def search_by_id(av_id):
     myquery = {"av_id": av_id}
-    result_x = mycol2.find(myquery)
+    result_x = mycol.find(myquery)
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
         print(x)
@@ -34,8 +34,8 @@ def search_by_id(av_id):
 
 def search_by_name_page(av_name, page_size=20, page_no=1):
     skip = page_size * (page_no - 1)
-    myquery = {"av_maker": av_name}
-    result_x = mycol2.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0})
+    myquery = {"av_star": av_name}
+    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0})
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
         print(x)
@@ -63,8 +63,8 @@ if __name__ == '__main__':
         pass
     else:
         pass
-    # search_by_name_page(f_name, 20, 1)
-    search_by_id(av_id)
+    search_by_name_page('松下紗栄子', 20, 1)
+    search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')
     # index_str = ""
     # for i in range(1, 1000):

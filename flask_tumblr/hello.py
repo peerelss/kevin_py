@@ -79,10 +79,10 @@ def show_maker_or_star(name, page_size=0, page_no=0):
 
 @app.route('/jav_en/<maker_name>/<int:page_size>/<int:page_no>')
 def show_maker_en(maker_name, page_size=0, page_no=0):
-    # print('page_size : ' + page_size + " page_no : " + page_no)
+    print('page_size : ' + " page_no : ")
     skip = page_size * (page_no - 1)
     myquery = {"av_maker": maker_name}
-    result_x = mycol_en.find(myquery, {'av_id': 1, 'av_jpg': 1, 'av_title': 1, "_id": 0}).limit(page_size).skip(skip)
+    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, 'av_title': 1, "_id": 0}).limit(page_size).skip(skip)
     return dumps(list(result_x))
 
 
@@ -104,4 +104,4 @@ def show_user_profile(username):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5000', debug=True)
+    app.run(host='127.0.0.1', port='5000', debug=True)

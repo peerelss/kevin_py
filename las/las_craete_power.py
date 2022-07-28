@@ -4,5 +4,6 @@
 
 import random
 
-for i in range(1, 133):
-    print(str(round(18 + random.uniform(0, 1) *20, 1)))
+for i in range(1, 77):
+    #print(str(round(38 + random.uniform(0, 1) * 5, 1)))
+    print('虚焊3')
