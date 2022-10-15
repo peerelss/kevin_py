@@ -8,6 +8,19 @@ import os
 from bs4 import BeautifulSoup
 import requests
 
+import pymongo
+
+
+class douban_item:
+    def __init__(self, av_id, av_thumbs):
+        self.av_id = av_id
+        self.av_thumbs = av_thumbs
+
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["av_db"]
+mycol_douban = mydb['av_movies_douban_test']
+mycol_douban_jpg = mydb['av_movies_douban_jpgs_test']
 cookies = {
     'bid': 'V6czckBkod8',
     'll': '108258',
@@ -38,11 +51,31 @@ def get_imdb_movies(index):
     pic_content = BeautifulSoup(response.content, 'lxml')
     print(pic_content)
     soup_jpg = pic_content.find_all('img')
+    jpgs = []
     for s in soup_jpg:
         src = str(s['src'])
         if src.endswith('webp'):
-            print(src)
+            jpgs.append(src)
+    douban_item_ = douban_item(index, jpgs)
+    # mycol_douban_jpg.insert_one(douban_item_.__dict__)
+    print(douban_item_.__dict__)
+
+
+def find_all_jpg():
+    myquery = {}
+    result_x = mycol_douban.find(myquery, {}).limit(30)
+    for x in result_x:
+        get_imdb_movies(x['id'])
+
+
+def find_jpg_by_id(id):
+    myquery = {'av_id': id}
+    result_x = mycol_douban_jpg.find_one(myquery)
+    print(result_x)
 
 
 if __name__ == '__main__':
-    get_imdb_movies('20470260')
+    myquery = {}
+    result_x = mycol_douban.find(myquery, {}).limit(30)
+    for x in result_x:
+        find_jpg_by_id(x['id'])

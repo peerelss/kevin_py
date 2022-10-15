@@ -8,18 +8,20 @@ import requests
 import os
 from bs4 import BeautifulSoup
 
-cookies_dict = {
-    "existmag": "all"
-}
 
-
-def get_url_from_maker(url):
+def get_jpg_list_from_url(url):
     print(url)
-    soup = BeautifulSoup(requests.get(url, cookies=cookies_dict).content, "lxml")
-    class_soup = soup.find_all(class_='movie-box')
-    for p in class_soup:
-        print(p['href'])
+    is_going = False  # 是否继续
+    pic_soup = BeautifulSoup(requests.get(url).content, "lxml").find_all('img')
+    for p in pic_soup:
+        print(p['src'])
+        is_going = True
+    return is_going
 
 
-for i in range(1, 11):
-    get_url_from_maker("https://www.javbus.com/label/1fd/" + str(i))
+if __name__ == "__main__":
+    url_begin = 'https://jav.land/ja/star/7mkg2x.html'
+    if True:
+        index = 1
+        while get_jpg_list_from_url(url_begin + '?page=' + str(index)):
+            index = index + 1

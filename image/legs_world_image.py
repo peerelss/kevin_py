@@ -6,6 +6,6 @@ def get_legs_world_jpg(url):
     print(url)
 
 
-for i in reversed(range(6766, 6812)):
+for i in reversed(range(6700, 6900)):
     url = "https://legsworld.net/UpdatesNew/Previews-1212x1644/" + str(i) + '.jpg'
     get_legs_world_jpg(url)

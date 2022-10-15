@@ -14,6 +14,7 @@ mydb = myclient["av_db"]
 mycol_en = mydb['av_items_thumb_en']
 mycol = mydb['av_items_thumb']
 
+
 class AvItem:
     def __init__(self, av_star, av_maker, av_tags, av_jpg, av_title, av_id, av_thumbs, av_series):
         self.av_id = av_id
@@ -34,8 +35,16 @@ def get_jpg_list_from_url(url):
         href = p['href']
         if str(href).startswith('/ja/movie'):
             is_going = True
-            get_jpg_url_from_url('https://jav.land' + p['href'])
+            get_jpg_from_dmm('https://jav.land' + p['href'])
     return is_going
+
+
+def get_jpg_from_dmm(url):
+    pic_content = BeautifulSoup(requests.get(url).content, 'lxml')
+    av_title = (pic_content.find('title').string.replace("- JAV.Land", ''))
+    av_id = av_title.split(" ")[0]
+    soup_jpg = pic_content.find_all('img')[0]['src']
+    print(soup_jpg)
 
 
 def get_jpg_url_from_url(url):
@@ -81,12 +90,12 @@ def search_av_item():
 
 
 if __name__ == "__main__":
-    url_begin = 'https://jav.land/ja/star/r5g4wx.html'
+    url_begin = 'https://jav.land/ja/star/7mkg2x.html'
     if True:
         index = 1
         while get_jpg_list_from_url(url_begin + '?page=' + str(index)):
             index = index + 1
-    #get_jpg_url_from_url("https://jav.land/ja/movie/javzpj15ldp.html")
+    # get_jpg_url_from_url("https://jav.land/ja/movie/javzpj15ldp.html")
     # if r_redis.sismember(redis_tumblr_dir_file_from_url,'https://jav.land/en/movie/jav8wvxv14p.html'):
     #    print('  exist url')
-    #search_av_item()
+    # search_av_item()
