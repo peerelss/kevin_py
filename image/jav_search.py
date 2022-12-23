@@ -105,7 +105,7 @@ def search_name(name):
 
 def search_by_if_exist(name):
     myquery = {"av_star": name}
-    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
+    result_x = mycol2.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
         if 0 < len(x['av_star']) < 6:
@@ -119,9 +119,9 @@ if __name__ == '__main__':
         os.makedirs(f_dir)
 
     # search_by_name_page(f_name, 20, 1)
-    # search_by_id('SHKD-744')
+    # search_by_id('ILLE-025')
     # search_by_series('○○の湿ったパンスト')
-    search_name('吉沢明歩')
+    search_by_if_exist('二宮和香')
     # search_aggregate_by_maker()
     # search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')

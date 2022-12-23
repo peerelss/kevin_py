@@ -5,16 +5,8 @@
 
 '''
 
-import json
-import sys
-import requests
-import os
-from bs4 import BeautifulSoup
 import pymongo
 import redis
-import re
-from bson.json_util import dumps, loads
-import unicodedata as ucd
 import random
 
 r_redis = redis.Redis(host='localhost', port=6379, decode_responses=True)

@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 import pymongo
 import redis
 
+r_path = 'L:\chromedown'
 
 if __name__ == '__main__':
-    pass
+    for i in os.listdir(r_path):
+        if str(i).startswith("Watch"):
+            print(i)

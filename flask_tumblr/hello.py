@@ -3,6 +3,7 @@ import json
 from flask_cors import CORS
 import pymongo
 from bson.json_util import dumps, loads
+from flask import Flask, render_template, request, Response
 
 STATIC_PATH = r"/media/kevin/Backup/tumblr_txt_all3/"
 app = Flask(__name__, static_folder=STATIC_PATH)
@@ -176,6 +177,13 @@ def show_all_series():
     result_x = mycol.aggregate(pipeline)
 
     return dumps({'series': result_x})
+
+
+@app.route('/get_all_offline', methods=['POST', 'GET'])
+def result():
+    print(request.is_json)
+    print(request.json)
+    return 'success'
 
 
 # 获取所有的tag，按数量排列
