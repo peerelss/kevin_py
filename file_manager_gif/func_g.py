@@ -1,4 +1,7 @@
+import os
+
 import pymongo
+import json
 
 # client = pymongo.MongoClient("mongodb+srv://kevin_miner_test:Peerless123@cluster0.458zxp3.mongodb.net/?retryWrites=true&w=majority")
 my_client = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -42,5 +45,7 @@ def insert_data():
 
 
 if __name__ == "__main__":
-    #insert_users()
-    get_data()
+    # insert_users()
+    STATIC_PATH = r"D:\games\angel\video\\"
+    if os.path.exists(STATIC_PATH) and os.path.isdir(STATIC_PATH):
+        print(json.dumps(list(reversed(sorted(os.listdir(STATIC_PATH))))))

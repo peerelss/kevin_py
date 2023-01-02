@@ -5,7 +5,7 @@ import os
 from nanoid import generate
 from tumblr_model import Tumblr_Model
 
-STATIC_PATH = r"C:\Users\kevin\Downloads\tumblr_txt_all3\\"
+STATIC_PATH = r"D:\games\angel_the_dreamgirl onlyfans leaked photos\\"
 app = Flask(__name__, static_folder=STATIC_PATH)
 CORS(app, supports_credentials=True)
 

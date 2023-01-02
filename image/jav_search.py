@@ -41,8 +41,8 @@ def search_by_series(av_series):
     print(str(count))
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
-        print(x)
-        # print((x['av_star']))
+        if 0 < len(x['av_star']) < 6:
+            search_every_thing_if_file_exist(x['av_id'])
 
 
 def search_every_thing_if_file_exist(av_id):
@@ -119,9 +119,9 @@ if __name__ == '__main__':
         os.makedirs(f_dir)
 
     # search_by_name_page(f_name, 20, 1)
-    # search_by_id('ILLE-025')
-    # search_by_series('○○の湿ったパンスト')
-    search_by_if_exist('二宮和香')
+    # search_by_id('JUC-032')
+    search_by_series('義母姦淫奴隷')
+    # search_by_if_exist('二宮和香')
     # search_aggregate_by_maker()
     # search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')

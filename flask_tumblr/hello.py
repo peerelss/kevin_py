@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 import json
 from flask_cors import CORS
@@ -5,7 +7,7 @@ import pymongo
 from bson.json_util import dumps, loads
 from flask import Flask, render_template, request, Response
 
-STATIC_PATH = r"/media/kevin/Backup/tumblr_txt_all3/"
+STATIC_PATH = r"D:\games\angel\\"
 app = Flask(__name__, static_folder=STATIC_PATH)
 CORS(app, supports_credentials=True)
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -196,6 +198,18 @@ def show_all_tags():
                 ]
     result_x = mycol.aggregate(pipeline)
     return dumps({'tags': result_x})
+
+
+@app.route('/tumblr/list')
+def show_all_tumblr_list():
+    if os.path.exists(STATIC_PATH) and os.path.isdir(STATIC_PATH):
+        return Response(json.dumps(list(reversed(sorted(os.listdir(STATIC_PATH))))), mimetype='application/json')
+    return {'[]'}
+
+
+@app.route('/jpg')
+def show_jpg():
+    return render_template('jpg.html')
 
 
 if __name__ == '__main__':
