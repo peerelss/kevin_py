@@ -26,12 +26,12 @@ av_id = 'Jukujo-' + str(7578)
 
 
 def search_by_id(av_id):
+    search_every_thing_if_file_exist(av_id)
     myquery = {"av_id": av_id}
     result_x = mycol.find(myquery)
     for x in result_x:
-        # save_jpg(x['av_id'], x['av_jpg'])
         print(x)
-        print((x['av_star']))
+        return x['av_series']
 
 
 def search_by_series(av_series):
@@ -119,8 +119,9 @@ if __name__ == '__main__':
         os.makedirs(f_dir)
 
     # search_by_name_page(f_name, 20, 1)
-    # search_by_id('JUC-032')
-    search_by_series('義母姦淫奴隷')
+    series = search_by_id('IPTD-356')
+    if series and len(series) > 2:
+        search_by_series(series)
     # search_by_if_exist('二宮和香')
     # search_aggregate_by_maker()
     # search_by_id('JBD-240')
