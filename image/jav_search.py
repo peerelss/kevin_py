@@ -31,7 +31,7 @@ def search_by_id(av_id):
     result_x = mycol.find(myquery)
     for x in result_x:
         print(x)
-        return x['av_series']
+        return x
 
 
 def search_by_series(av_series):
@@ -119,10 +119,10 @@ if __name__ == '__main__':
         os.makedirs(f_dir)
 
     # search_by_name_page(f_name, 20, 1)
-    series = search_by_id('IPTD-356')
-    if series and len(series) > 2:
-        search_by_series(series)
-    # search_by_if_exist('二宮和香')
+    all = search_by_id('SSNI-141')
+    print(all)
+    # search_by_series(series)
+    search_by_if_exist(all['av_star'])
     # search_aggregate_by_maker()
     # search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')
