@@ -188,6 +188,7 @@ def result():
     return 'success'
 
 
+
 # 获取所有的tag，按数量排列
 @app.route('/tags')
 def show_all_tags():

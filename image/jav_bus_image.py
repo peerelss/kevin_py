@@ -104,7 +104,7 @@ def search_jav_bus():
 
 if __name__ == '__main__':
     i = 1
-    while get_url_from_maker('https://www.javbus.com/star/p37/' + str(i)):
+    while get_url_from_maker('https://www.javbus.com/star/two/' + str(i)):
         i = i + 1
     # get_movie_from_url('https://www.javbus.com/HEY-021')
     # search_jav_bus()
