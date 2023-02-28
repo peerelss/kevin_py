@@ -20,14 +20,11 @@ def get_jpg_url_from_url(url):
     print(url)
     u = requests.get(url).content
     soup_jpg = BeautifulSoup(u, 'lxml').find_all('img')
-    f = open(file_target + str(url).split('/')[4] + '_cfake.txt', 'a')
     for s in soup_jpg:
         src = str(s['src'])
         if 'thumbs' in src:
             urls = 'http://cfake.com/' + src.replace('thumbs', 'photos')
-            f.write(urls + '\n')
             print(urls)
-    f.close()
     soup = BeautifulSoup(u, 'lxml').find_all("div", {"class": "thumb_show"})
     return len(soup) == 30
 
@@ -46,5 +43,5 @@ def init_list(file_name):
 
 if __name__ == "__main__":
     # file_name_txt = (get_file_name_from_url('http://cfake.com/picture/Facial/25/3/p'))
-    for i in init_list(file_resource):
-        init_cfake_url(i)
+    for i in range(0, 7):
+        get_jpg_url_from_url('https://cfake.com/images/categories/Cumshot/32/3/p' + str(i))

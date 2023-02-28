@@ -83,7 +83,6 @@ def get_movie_from_url(url):
         r_redis.sadd(redis_tumblr_dir_file_from_url_jav_bus_error, url)
         print(url + '  出现问题')
 
-
 # 从厂商或者女优获取影片链接
 def get_url_from_maker(url):
     print(url)
@@ -104,7 +103,7 @@ def search_jav_bus():
 
 if __name__ == '__main__':
     i = 1
-    while get_url_from_maker('https://www.javbus.com/star/two/' + str(i)):
+    while get_url_from_maker('https://www.javbus.com/star/1rc/' + str(i)):
         i = i + 1
     # get_movie_from_url('https://www.javbus.com/HEY-021')
     # search_jav_bus()

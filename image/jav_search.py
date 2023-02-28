@@ -18,6 +18,7 @@ mydb = myclient["av_db"]
 mycol = mydb['av_items_thumb']
 mycol2 = mydb['av_items_thumb_jav_bus']
 mycol3 = mydb['av_items_thumb_jav_luxu']
+mycol_en = mydb['av_items_thumb_en']
 mycol_giga = mydb['av_items_thumb_giga']
 # ，翔田千里，北条麻妃，白石さゆり,里美ゆりあ，小泉彩,澤村レイコ（高坂保奈美、高坂ますみ）, JULIA，村上里沙，竹内紗里奈 ，mdyd,
 f_name = '吉沢明歩'
@@ -105,11 +106,24 @@ def search_name(name):
 
 def search_by_if_exist(name):
     myquery = {"av_star": name}
-    result_x = mycol2.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
+    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
         if 0 < len(x['av_star']) < 6:
             search_every_thing_if_file_exist(x['av_id'])
+
+
+def search_by_if_exist_by_maker(name):
+    myquery = {"av_maker": name}
+    result_x = mycol_en.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
+    for x in result_x:
+        # save_jpg(x['av_id'], x['av_jpg'])
+        # if 0 < len(x['av_star']) < 6:
+        search_every_thing_if_file_exist(x['av_id'])
+
+
+def search_by_if_exist_av_id(av_id):
+    search_every_thing_if_file_exist(av_id)
 
 
 if __name__ == '__main__':
@@ -118,23 +132,25 @@ if __name__ == '__main__':
     else:
         os.makedirs(f_dir)
 
-    # search_by_name_page(f_name, 20, 1)
-    all = search_by_id('SSNI-141')
-    print(all)
+    # search_name('澤村レイコ（高坂保奈美、高坂ますみ）')
+    # all = search_by_id('JMD-080')
+    # print(all)
     # search_by_series(series)
-    search_by_if_exist(all['av_star'])
+    # search_by_if_exist(all['av_star'])
+    #  search_by_if_exist_by_maker('シネマジック')
+
     # search_aggregate_by_maker()
     # search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')
     # index_str = ""
-    # for i in range(1, 1000):
-    #     if i < 10:
-    #         index_str = '00' + str(i)
-    #     elif 9 < i < 100:
-    #         index_str = '0' + str(i)
-    #     else:
-    #         index_str = str(i)
-    #     av_id = 'JUFD-' + index_str
-    #     #save_jpg(av_id, url_temp.replace('INDEX', index_str))
+    for i in range(1, 40):
+        if i < 10:
+            index_str = '00' + str(i)
+        elif 9 < i < 100:
+            index_str = '0' + str(i)
+        else:
+            index_str = str(i)
+        av_id = 'CMk-' + index_str
+        search_by_if_exist_av_id(av_id)
 
-    # search_by_if_exist('Hitomi（田中瞳）')
+   # search_by_if_exist('澤村レイコ（高坂保奈美、高坂ますみ）')

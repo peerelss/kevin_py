@@ -28,7 +28,7 @@ everything_dll.Everything_GetResultFileNameW.argtypes = [ctypes.c_int]
 everything_dll.Everything_GetResultFileNameW.restype = ctypes.c_wchar_p
 
 # setup search
-everything_dll.Everything_SetSearchW(".mp4")
+everything_dll.Everything_SetSearchW("cmk")
 everything_dll.Everything_SetRequestFlags(
     EVERYTHING_REQUEST_FILE_NAME | EVERYTHING_REQUEST_PATH | EVERYTHING_REQUEST_SIZE | EVERYTHING_REQUEST_DATE_MODIFIED)
 
@@ -69,5 +69,7 @@ for i in range(num_results):
     everything_dll.Everything_GetResultFullPathNameW(i, filename, 260)
     everything_dll.Everything_GetResultDateModified(i, date_modified_filetime)
     everything_dll.Everything_GetResultSize(i, file_size)
-    print("Filename: {}\nDate Modified: {}\nSize: {} bytes\n".format(ctypes.wstring_at(filename),
-                                                                     get_time(date_modified_filetime), file_size.value))
+    if int(file_size.value) > 1024 * 1024   * 400:
+        #print(file_size)
+    # print("Filename: {}\nDate Modified: {}\nSize: {} bytes\n".format(ctypes.wstring_at(filename),get_time(date_modified_filetime), file_size.value))
+        print("Filename: {}".format(ctypes.wstring_at(filename)))
