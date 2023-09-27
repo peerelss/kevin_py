@@ -84,18 +84,28 @@ def get_jpg_url_from_url(url):
 
 def search_av_item():
     myquery = {"av_star": '松下紗栄子'}
-    result_x = mycol_en.find(myquery)
+    result_x = mycol.find(myquery)
     for x in result_x:
         print(x)
 
 
+def get_image_from_index_page(url, max_index):
+    for i in range(1, max_index + 1):
+        pic_content = BeautifulSoup(requests.get(url + str(i)).content, 'lxml')
+        img_tags = pic_content.find_all('img')
+        for img in img_tags:
+            src = img.get('src')
+            print(src)
+
+
 if __name__ == "__main__":
-    url_begin = 'https://jav.land/ja/star/7mkg2x.html'
-    if True:
-        index = 1
-        while get_jpg_list_from_url(url_begin + '?page=' + str(index)):
-            index = index + 1
+    ''' url_begin = 'https://jav.land/ja/star/7mkg2x.html'
+     if True:
+         index = 1
+         while get_jpg_list_from_url(url_begin + '?page=' + str(index)):
+             index = index + 1
+             '''
     # get_jpg_url_from_url("https://jav.land/ja/movie/javzpj15ldp.html")
     # if r_redis.sismember(redis_tumblr_dir_file_from_url,'https://jav.land/en/movie/jav8wvxv14p.html'):
     #    print('  exist url')
-    # search_av_item()
+    get_image_from_index_page('https://jav.land/en/maker/vdyxkl.html?page=', 176)

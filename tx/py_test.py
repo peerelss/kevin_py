@@ -1,33 +1,42 @@
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import MultipleLocator
+from datetime import datetime
 
-# 从pyplot导入MultipleLocator类，这个类用于设置刻度间隔
+import requests
+from bs4 import BeautifulSoup
+import os
 
-x_values = list(range(10))
-y_values = [800, 811, 844, 842, 800, 890, 800, 803, 790, 750]
-y = list(map(lambda x: x - 700, y_values))
-y2_values = [4400, 4411, 4444, 4442, 4400, 4490, 4400, 4403, 4490, 4450]
-y2 = list(map(lambda x: x - 4200, y2_values))
-plt.figure(figsize=(6, 6.5))
-plt.plot(x_values, y, c='green')
-plt.plot(x_values, y2, c='red')
-plt.title('Squares', fontsize=24)
-plt.tick_params(axis='both', which='major', labelsize=14)
-plt.xlabel('Numbers', fontsize=14)
-plt.ylabel('Squares', fontsize=14)
-x_major_locator = MultipleLocator(1)
-# 把x轴的刻度间隔设置为1，并存在变量里
-y_major_locator = MultipleLocator(20)
-# 把y轴的刻度间隔设置为10，并存在变量里
-ax = plt.gca()
-# ax为两条坐标轴的实例
-ax.xaxis.set_major_locator(x_major_locator)
-# 把x轴的主刻度设置为1的倍数
-ax.yaxis.set_major_locator(y_major_locator)
-# 把y轴的主刻度设置为10的倍数
-plt.xlim(-0.5, 11)
-# 把x轴的刻度范围设置为-0.5到11，因为0.5不满一个刻度间隔，所以数字不会显示出来，但是能看到一点空白
-plt.ylim(0, 400)
+link_set = {}
 
-# 把y轴的刻度范围设置为-5到110，同理，-5不会标出来，但是能看到一点空白
-plt.show()
+
+def get_image_from_link(album_link):
+    folder_path = str(album_link).split('/')[-1]
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    soup = BeautifulSoup(requests.get(album_link).text, "html.parser")
+    links = soup.find_all("a")
+    links_str = list(map(lambda x: str(x.get('href')), links))
+    links_jpg = list(filter(lambda x: 'big.jpg' in x, links_str))
+    for img_url in links_jpg:
+        print(img_url)
+        response = requests.get(img_url)
+        img_name = img_url.split("/")[-1]
+        img_path = os.path.join(folder_path, img_name)
+        with open(img_path, "wb") as f:
+            f.write(response.content)
+
+
+def get_album_from_url():
+    url = 'https://www.xvideos.com/amateur-channels/sexymuslima#_tabPhotos'
+
+    # 解析 HTML
+    soup = BeautifulSoup(requests.get(url).text, "html.parser")
+    links = soup.find_all("a")
+    list_1 = list(map(lambda x: 'https://www.xvideos.com' + str(x.get("href")), links))
+    list_1_unique = list(set(list_1))
+    list_filter = list(filter(lambda x: 'sexymuslima/photos' in x, list_1_unique))
+    for li in list_filter:
+        # get_image_from_link(li)
+        print(li)
+
+
+if __name__ == '__main__':
+    get_image_from_link('https://www.xvideos.com/amateur-channels/sexymuslima/photos/7443261/large_hanches_de_musulmane')

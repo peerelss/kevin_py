@@ -44,4 +44,4 @@ def init_list(file_name):
 if __name__ == "__main__":
     # file_name_txt = (get_file_name_from_url('http://cfake.com/picture/Facial/25/3/p'))
     for i in range(0, 7):
-        get_jpg_url_from_url('https://cfake.com/images/categories/Cumshot/32/3/p' + str(i))
+        get_jpg_url_from_url('https://cfake.com/images/categories/Cum_Slut/61/3/p' + str(i))

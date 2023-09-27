@@ -101,7 +101,7 @@ def search_name(name):
     myquery = {'av_star': name}
     result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, 'av_title': 1, '_id': 0})
     for x in result_x:
-        print(x['av_jpg'])
+        search_by_if_exist_av_id(x['av_id'])
 
 
 def search_by_if_exist(name):
@@ -115,7 +115,7 @@ def search_by_if_exist(name):
 
 def search_by_if_exist_by_maker(name):
     myquery = {"av_maker": name}
-    result_x = mycol_en.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
+    result_x = mycol.find(myquery, {'av_id': 1, 'av_jpg': 1, "_id": 0, 'av_star': 1, 'av_maker': 1})
     for x in result_x:
         # save_jpg(x['av_id'], x['av_jpg'])
         # if 0 < len(x['av_star']) < 6:
@@ -126,14 +126,14 @@ def search_by_if_exist_av_id(av_id):
     search_every_thing_if_file_exist(av_id)
 
 
-if __name__ == '__main__':
-    if os.path.exists(f_dir):
-        pass
-    else:
-        os.makedirs(f_dir)
+def t():
+    pass
 
-    # search_name('澤村レイコ（高坂保奈美、高坂ますみ）')
-    # all = search_by_id('JMD-080')
+
+if __name__ == '__main__':
+    search_name('吉沢明歩')
+
+    # all = search_by_id('MDYD-239')
     # print(all)
     # search_by_series(series)
     # search_by_if_exist(all['av_star'])
@@ -143,14 +143,5 @@ if __name__ == '__main__':
     # search_by_id('JBD-240')
     # save_jpg('ghnu84', 'https://www.giga-web.jp/db_titles/ghnu/ghnu84/pac_l.jpg')
     # index_str = ""
-    for i in range(1, 40):
-        if i < 10:
-            index_str = '00' + str(i)
-        elif 9 < i < 100:
-            index_str = '0' + str(i)
-        else:
-            index_str = str(i)
-        av_id = 'CMk-' + index_str
-        search_by_if_exist_av_id(av_id)
 
-   # search_by_if_exist('澤村レイコ（高坂保奈美、高坂ますみ）')
+# search_by_if_exist('澤村レイコ（高坂保奈美、高坂ますみ）')

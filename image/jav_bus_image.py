@@ -16,6 +16,7 @@ redis_tumblr_dir_file_from_url_jav_bus_error = 'redis_set_jav_bus_url_error'  # 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["av_db"]
 mycol = mydb['av_items_thumb_jav_bus']
+mycol1 = mydb['av_items_thumb']
 cookies_dict = {
     "existmag": "all"
 }
@@ -83,6 +84,7 @@ def get_movie_from_url(url):
         r_redis.sadd(redis_tumblr_dir_file_from_url_jav_bus_error, url)
         print(url + '  出现问题')
 
+
 # 从厂商或者女优获取影片链接
 def get_url_from_maker(url):
     print(url)
@@ -95,15 +97,16 @@ def get_url_from_maker(url):
 
 
 def search_jav_bus():
-    myquery = {"av_star": '長月ラム'}
-    result_x = mycol.find(myquery)
+    myquery1 = {"av_star": '松下紗栄子'}
+    myquery = {"av_id": 'AKA-019'}
+    result_x = mycol1.find(myquery)
     for x in result_x:
         print(x)
 
 
 if __name__ == '__main__':
-    i = 1
-    while get_url_from_maker('https://www.javbus.com/star/1rc/' + str(i)):
-        i = i + 1
+   # i = 1
+    #while get_url_from_maker('https://www.javbus.com/star/opq/' + str(i)):
+      #  i = i + 1
     # get_movie_from_url('https://www.javbus.com/HEY-021')
-    # search_jav_bus()
+    search_jav_bus()

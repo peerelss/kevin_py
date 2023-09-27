@@ -46,10 +46,11 @@ def get_mp4_from_link():
 
 
 if __name__ == "__main__":
-    if os.path.isdir(url_resource):
-        file_list = os.listdir(url_resource)
-        for f_file in file_list:
-            file_str_list.append(str(f_file))
+   # if os.path.isdir(url_resource):
+      #  file_list = os.listdir(url_resource)
+      #  for f_file in file_list:
+        #    file_str_list.append(str(f_file))
     # get_pic_link_from_begin()
-    get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/shorts/')
+    #get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/shorts/')
     #get_mp4_link_from_begin('https://reflectivedesire.com/videos/categories/scenes/')
+   get_pic_from_link('https://reflectivedesire.com/photos/hitachi-torment/')
