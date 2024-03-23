@@ -131,7 +131,7 @@ def t():
 
 
 if __name__ == '__main__':
-    search_name('吉沢明歩')
+    search_name('小早川怜子')
 
     # all = search_by_id('MDYD-239')
     # print(all)

@@ -1,7 +1,9 @@
 import os.path
-import argparse
+
 from bs4 import BeautifulSoup
 import requests
+from multiprocessing.dummy import Pool as ThreadPool
+from urllib.parse import urlparse, parse_qs
 
 cookies = {
     'LW_lang': 'en',
@@ -93,9 +95,15 @@ def find_jpg_from_url(url):
                             headers=headers)
     soup = BeautifulSoup(response.content, "lxml")
     a_soup = soup.find_all('a', href=True)
-    for a in a_soup:
-        if 'MyGalleryDownload' in (a['href']):
-            download_video_from_url('https://legsworld.net/CSS_Version/' + a['href'])
+    a_f_soup = filter(lambda x: 'MyGalleryDownload' in (x['href']), a_soup)
+    a_url_soup = map(lambda x: 'https://legsworld.net/CSS_Version/' + x['href'], a_f_soup)
+    pool = ThreadPool(10)
+    result = pool.map(download_video_from_url, a_url_soup)
+    pool.close()
+    pool.join()
+    # for a in a_soup:
+    #      if 'MyGalleryDownload' in (a['href']):
+    #        download_video_from_url('https://legsworld.net/CSS_Version/' + a['href'])
     '''tag = soup.find_all('img')
     for t in tag:
         ts = str(t['src']).replace('..', "")
@@ -105,28 +113,41 @@ def find_jpg_from_url(url):
 '''
 
 
+def url_to_filename(url):
+    # 解析URL
+    parsed_url = urlparse(url)
+    # 提取查询字符串中的参数
+    query_params = parse_qs(parsed_url.query)
+    # 提取所需的参数
+    serno = query_params.get('serno', [''])[0]
+    pic = str(int(query_params.get('pic', [''])[0]) + 1)
+    # 生成新的文件名
+    filename = f"Legsworld-{serno}-{pic}.jpg"
+    return filename
+
+
 def get_image_from_url(index):
     params['serno'] = str(index)
     if index < 1000:
         params['serno'] = '0' + str(index)
-
     response = requests.get('https://legsworld.net/CSS_Version/MyGallery.php', params=params, cookies=cookies,
                             headers=headers)
     soup = BeautifulSoup(response.content, "lxml")
-
     a_soup = soup.find_all('a', href=True)
     for a in a_soup:
         if 'MyGalleryDisplay.php' in a['href']:
-            find_jpg_from_url('https://legsworld.net/CSS_Version/' + a['href'])
-            print('https://legsworld.net/CSS_Version/' + a['href'])
+            jpg_url = ('https://legsworld.net/CSS_Version/' + a['href'])
+            print(jpg_url)
+            # print(url_to_filename(jpg_url))
+            file_dir = r'C:\Users\kevin\Downloads\legsworld\\' + str(index) + '\\' + url_to_filename(jpg_url)
+            if os.path.exists(file_dir):
+                print(file_dir + ' exist')
+            else:
+                find_jpg_from_url('https://legsworld.net/CSS_Version/' + a['href'])
+        #    find_jpg_from_url('https://legsworld.net/CSS_Version/' + a['href'])
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='示例脚本')
-    parser.add_argument('--param', type=int, help='一个整数参数')
-
-    args = parser.parse_args()
-    print(f"接收到的参数：{args.param}")
-    for i in (range(args.param, 7229)):
+    for i in (range(7244, 7252)):
         print(str(i))
         get_image_from_url(i)

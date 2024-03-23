@@ -3,9 +3,14 @@ import redis
 import requests
 from bs4 import BeautifulSoup
 import re
+import pymongo
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["t66y_av_rm"]
+mycol = mydb['t66y_av_rm']
 
 
-def get_magnet_by_page():
+def get_magnet_by_page(url):
     cookies = {
         '227c9_lastvisit': '0^%^091695778407^%^09^%^2Fthread0806.php^%^3Ffid^%^3D28^%^26search^%^3D^%^26page^%^3D55',
     }
@@ -27,7 +32,7 @@ def get_magnet_by_page():
         'If-None-Match': '328d-6061a764eddcd-gzip',
     }
 
-    response = requests.get('https://www.t66y.com/htm_data/2309/28/5959126.html', cookies=cookies, headers=headers)
+    response = requests.get(url, cookies=cookies, headers=headers)
     html_content = response.text
     # print(html_content)
     # 使用 BeautifulSoup 解析 HTML
@@ -35,7 +40,8 @@ def get_magnet_by_page():
 
     # 提取所有的链接和文字
     links = []
-
+    title = soup.title.string
+    print(title)
     for link in soup.find_all('a'):
         href = link.get('href')
         text = link.text.strip()
@@ -44,10 +50,13 @@ def get_magnet_by_page():
     # 打印链接和文字
     for text, href in links:
         if 'link.php?hash=' in str(href):
-            print(f'Text: {text}, Link: {href}')
+            print(href)
+            if '=233' in str(href):
+                print('magnet:?xt=urn:btih:' + str(href).split('=233')[1])
 
 
-def href_and_text_by_page():
+def href_and_text_by_page(page):
+    print(page)
     cookies = {
         '227c9_lastvisit': '0^%^091695778407^%^09^%^2Fthread0806.php^%^3Ffid^%^3D28^%^26search^%^3D^%^26page^%^3D55',
     }
@@ -70,7 +79,7 @@ def href_and_text_by_page():
     params = {
         'fid': '28',
         'search': '',
-        'page': '3',
+        'page': str(page),
     }
 
     response = requests.get('https://www.t66y.com/thread0806.php', params=params, cookies=cookies, headers=headers)
@@ -90,10 +99,12 @@ def href_and_text_by_page():
     # 打印链接和文字
     for text, href in links:
         if 'htm_data' in str(href):
-            print(f'Text: {text}, Link: {href}')
+            # print(f'Text: {text}, Link: {href}')
+            print(href)
+            get_magnet_by_page('https://www.t66y.com/' + href)
 
 
-def get_magnet_from_rmdown():
+def get_magnet_from_rmdown(hash):
     import requests
 
     cookies = {
@@ -116,7 +127,7 @@ def get_magnet_from_rmdown():
     }
 
     params = {
-        'hash': '2333c233f700f4339e4ab703c27d47efd0306f6d23d',
+        'hash': hash,
     }
 
     response = requests.get('https://www.rmdown.com/link.php', params=params, cookies=cookies, headers=headers)
@@ -133,4 +144,6 @@ def get_magnet_from_rmdown():
 # magnet:?xt=urn:btih:3c233f700f4339e4ab703c27d47efd0306f6d23d&dn=MDYD-797-U&tr=http://sukebei.tracker.wf:8888/announce&tr=udp://tracker.archlinux.org.theoks.net:6969/announce&tr=udp://tracker.openbittorrent.com:6969&tr=http://tracker.tasvideos.org:6969/announce&tr=udp://tracker.leech.ie:1337/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.coppersurfer.tk:6969/announce&tr=udp://tracker.internetwarriors.net:1337&tr=udp://tracker.internetwarriors.net:1337/announce&tr=udp://open.stealth.si:80/announce&tr=udp://9.rarbg.me:2710/announce&tr=udp://9.rarbg.me:2710&tr=http://anidex.moe:6969/announce&tr=http://freerainbowtables.com:6969/announce&tr=http://www.freerainbowtables.com:6969/announce&tr=udp://9.rarbg.com:2830/announce&tr=http://tracker2.itzmx.com:6961/announce&tr=http://tracker.etree.org:6969/announce&tr=http://www.thetradersden.org/forums/tracker:80/announce.php&tr=udp://udp-tracker.shittyurl.org:6969/announce&tr=https://tracker.shittyurl.org/announce&tr=http://tracker.shittyurl.org/announce&tr=udp://bt.firebit.org:2710/announce&tr=http://bt.firebit.org:2710/announce&tr=udp://exodus.desync.com:6969/announce&tr=udp://tracker.torrent.eu.org:451/announce&tr=http://sukebei.tracker.wf:8888/announce
 
 if __name__ == '__main__':
-    get_magnet_from_rmdown()
+    for i in range(1, 61 + 1):
+        href_and_text_by_page(str(i))
+    # get_magnet_from_rmdown()
