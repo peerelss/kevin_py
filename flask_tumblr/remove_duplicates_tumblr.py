@@ -107,4 +107,7 @@ def get_test():
 
 if __name__ == '__main__':
     # delete_empty_directories(r'f:\after\image')
-    get_test()
+    #get_test()
+    dir_p=r'I:\after\image\杉浦泽夫\[www.meiying.org]杉浦则夫2005年全集套图+视频'
+    if os.path.exists(dir_p):
+        print('exist!')

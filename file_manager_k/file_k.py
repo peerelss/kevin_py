@@ -102,6 +102,13 @@ def insert_file_info_to_db(file_abs):
     cursor.close()
 
 
+def search_file_by_dir(file_path):
+    if os.path.isdir(file_path):
+        for file in os.listdir(file_path):
+            print(file)
+
+
 if __name__ == "__main__":
-    getallfile(rootdir)
+    # getallfile(rootdir)
+    search_file_by_dir(r'f:\after\set\TranniesInTrouble1.com')
     # insert_file_info_to_db('/media/kevin/My Passport/movies/北条麻妃/SVDVD-138.mp4')

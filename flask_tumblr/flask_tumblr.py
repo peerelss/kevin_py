@@ -4,7 +4,7 @@ import werkzeug
 from flask import Flask, send_from_directory, safe_join, abort, jsonify, send_file, request
 import os
 from flask_cors import CORS
-
+from image.sdk_every_thing_http import search_file_by_key_world
 app = Flask(__name__)
 CORS(app)
 
@@ -105,6 +105,8 @@ def delete_image():
         print(image_path)
         os.remove(image_path)
         print('删除成功')
+        with open('delete_file_records.txt', 'a', encoding='utf-8') as file:  # 使用追加模式'a'
+            file.write(image_path + '\n')
         return jsonify({"status": "success", "message": "Image deleted successfully"})
     except Exception as e:
         print('删除失败')
@@ -114,6 +116,7 @@ def delete_image():
 @app.route('/list-path-details', methods=['GET'])
 def list_path_details():
     path = request.args.get('path')
+    print(path)
     if not path or not os.path.exists(path) or not os.path.isdir(path):
         return jsonify({"error": "Invalid or non-existent directory path provided."}), 400
 
@@ -128,5 +131,23 @@ def list_path_details():
     return jsonify(contents)
 
 
+@app.route('/search-key-world', methods=['GET'])
+def search_key_world():
+    path = request.args.get('path')
+    print(path)
+    results = search_file_by_key_world(path)
+    for re in results:
+        print(re['filename'])
+    result_p = list(filter(lambda x: not str(x['filename']).endswith('.lnk'), results))
+    for re in result_p:
+        print(re)
+    return jsonify(result_p)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def hello_world():
+    return "<p>Hello, World!</p>"
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000,use_reloader=True)
