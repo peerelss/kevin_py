@@ -139,8 +139,30 @@ def search_web_sdk(key_world):
     return (response.json()['results'])
 
 
+def search_file_by_name_sdk(full_name):
+    everything_dll.Everything_SetSearchW(full_name)
+    everything_dll.Everything_SetSort(6)
+    everything_dll.Everything_SetRequestFlags(
+        EVERYTHING_REQUEST_FILE_NAME | EVERYTHING_REQUEST_PATH | EVERYTHING_REQUEST_SIZE | EVERYTHING_REQUEST_DATE_MODIFIED)
+
+    # execute the query
+    everything_dll.Everything_QueryW(1)
+
+    # get the number of results
+    num_results = everything_dll.Everything_GetNumResults()
+    result_list = []
+    for i in range(num_results):
+        everything_dll.Everything_GetResultFullPathNameW(i, filename, 260)
+        everything_dll.Everything_GetResultDateModified(i, date_modified_filetime)
+        everything_dll.Everything_GetResultSize(i, file_size)
+        file_p = ctypes.wstring_at(filename)
+        if os.path.exists(file_p) and os.path.isfile(file_p):
+            file_name = os.path.basename(file_p)
+            result_list.append({'file_path': file_p, 'size': file_size.value, 'filename': file_name})
+    return result_list
+
+
 if __name__ == '__main__':
     # js = search_web_sdk('011614_738')
-    results = search_file_by_key_world('Yumi Kazama in Sales Lady in Heat (tora-tora XVN 2008-05-31)')
-    for re in results:
-        print(re)
+    results = if_file_exist_with_size('JBD-240', 3000)
+    print(results)

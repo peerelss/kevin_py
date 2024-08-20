@@ -1,12 +1,23 @@
 import urllib
-
+import psutil
 import werkzeug
 from flask import Flask, send_from_directory, safe_join, abort, jsonify, send_file, request
 import os
 from flask_cors import CORS
 from image.sdk_every_thing_http import search_file_by_key_world
+from functools import lru_cache
 app = Flask(__name__)
 CORS(app)
+
+visit_counter = 0
+visit_list = set()
+
+
+@app.route('/index')
+def index():
+    global visit_counter
+    visit_counter += 1
+    return f'页面访问次数: {visit_counter}'
 
 
 def get_image_list(directory):
@@ -17,6 +28,21 @@ def get_image_list(directory):
                 image_path = os.path.join(root, file)
                 image_list.append(image_path)
     return image_list
+
+
+@app.route('/disk_info')
+def disk_info():
+    disks = []
+    for partition in psutil.disk_partitions():
+        usage = psutil.disk_usage(partition.mountpoint)
+        disks.append({
+            "device": partition.device,
+            "total": usage.total,
+            "used": usage.used,
+            "free": usage.free,
+            "percent": usage.percent
+        })
+    return jsonify(disks)
 
 
 @app.route('/image/<path:filename>')
@@ -64,7 +90,6 @@ def list_files():
 def get_images():
     folder_o = request.args.get('folder')
     folder = urllib.parse.unquote(folder_o)
-    print(folder)
 
     # 确保安全地获取文件夹路径
     if not folder or '..' in folder or '~' in folder:
@@ -103,19 +128,42 @@ def delete_image():
     # 尝试删除图片
     try:
         print(image_path)
+        drive, _ = os.path.splitdrive(image_path)
+        size = os.path.getsize(image_path) / (1024 * 1024)
+        with open('file_info.txt', 'w') as f:
+            f.write(f"File Path: {image_path}\n")
+            f.write(f"Drive: {drive}\n")
+            f.write(f"Size: {size} bytes\n")
         os.remove(image_path)
         print('删除成功')
         with open('delete_file_records.txt', 'a', encoding='utf-8') as file:  # 使用追加模式'a'
             file.write(image_path + '\n')
-        return jsonify({"status": "success", "message": "Image deleted successfully"})
+        return jsonify({"status": "success", "message": f"Released space from Drive: {drive},size: {size:.2f} MB\n"})
     except Exception as e:
         print('删除失败')
         return jsonify({"status": "failed", "message": str(e)}), 500
 
 
+@lru_cache(maxsize=32)
+def get_file_list(path):
+    if not path or not os.path.exists(path) or not os.path.isdir(path):
+        return jsonify({"error": "Invalid or non-existent directory path provided."}), 400
+
+    contents = {'files': [], 'directories': []}
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path):
+            contents['files'].append({'filename': item, 'path': item_path})
+        elif os.path.isdir(item_path):
+            contents['directories'].append({'filename': item, 'path': item_path})
+    return contents
+
 @app.route('/list-path-details', methods=['GET'])
 def list_path_details():
     path = request.args.get('path')
+    return jsonify(get_file_list(path))
+'''
+    #  return jsonify({'message': '数据没有变化', 'status': 304})
     print(path)
     if not path or not os.path.exists(path) or not os.path.isdir(path):
         return jsonify({"error": "Invalid or non-existent directory path provided."}), 400
@@ -127,8 +175,8 @@ def list_path_details():
             contents['files'].append({'filename': item, 'path': item_path})
         elif os.path.isdir(item_path):
             contents['directories'].append({'filename': item, 'path': item_path})
+    '''
 
-    return jsonify(contents)
 
 
 @app.route('/search-key-world', methods=['GET'])
@@ -150,4 +198,5 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000,use_reloader=True)
+    visit_counter = 0
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)

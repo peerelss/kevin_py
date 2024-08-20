@@ -205,7 +205,7 @@ def get_magent():
                             headers=headers)
 
 
-def print_progress_bar(iteration, total, prefix='', suffix='', length=50, fill='█'):
+def print_progress_bar(iteration, total, prefix='', suffix='', length=100, fill='█'):
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -236,7 +236,7 @@ def text():
         for link in download_links:
             download_file(link)
             print_progress_bar(photo_links.index(photo_link) + 1, task_length, prefix='Progress:', suffix='Complete ',
-                               length=50)
+                               length=100)
 
 
 def get_video_link(page):
