@@ -34,8 +34,8 @@ def move_large_files(source_folder, target_folder, size_threshold):
 
 
 # 示例参数
-source_folder = r'O:\pk'  # 替换为你的源文件夹路径
-target_folder = r'O:\after'  # 替换为你的目标文件夹路径
+source_folder = r'n:\p'  # 替换为你的源文件夹路径
+target_folder = r'n:\after'  # 替换为你的目标文件夹路径
 size_threshold = 30 * 1000 * 1000  # 以字节为单位，例如这里是1MB
 
 move_large_files(source_folder, target_folder, size_threshold)
