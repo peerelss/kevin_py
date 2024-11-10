@@ -1,7 +1,8 @@
 import urllib
 import psutil
 import werkzeug
-from flask import Flask, send_from_directory, safe_join, abort, jsonify, send_file, request
+from werkzeug.utils import safe_join
+from flask import Flask, send_from_directory,  abort, jsonify, send_file, request
 import os
 from flask_cors import CORS
 from image.sdk_every_thing_http import search_file_by_key_world
