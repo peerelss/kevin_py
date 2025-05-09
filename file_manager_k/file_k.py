@@ -4,6 +4,8 @@ import pymysql
 import ntpath
 import redis
 
+from image.sdk_every_thing_http import search_file_by_key_world
+
 # 创建一个redis sorted set 来保存所有的文件类型
 sorted_set_type_name = 'redis_file_type_kevin_6'
 set_name = 'redis_file_dir_history'  # 记录已经扫描过得文件夹历史
@@ -108,7 +110,21 @@ def search_file_by_dir(file_path):
             print(file)
 
 
+# 找到所有文件名包含(1). 的文件。
+
+def find_all_file_contain_1():
+    results = search_file_by_key_world('(1)')
+    for re in results:
+        print(re['filename'])
+    result_p = list(filter(lambda x: not str(x['filename']).endswith('.lnk'), results))
+    for re in result_p:
+        print(re)
+
+
+# 找到所在的文件夹，寻找有没有同名且同大小的文件
+
+# 删除文件名包含(1)
+
+
 if __name__ == "__main__":
-    # getallfile(rootdir)
-    search_file_by_dir(r'f:\after\set\TranniesInTrouble1.com')
-    # insert_file_info_to_db('/media/kevin/My Passport/movies/北条麻妃/SVDVD-138.mp4')
+    find_all_file_contain_1()

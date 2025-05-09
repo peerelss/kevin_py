@@ -114,9 +114,9 @@ def search_file_by_key_world(fileName):
         everything_dll.Everything_GetResultSize(i, file_size)
         file_p = ctypes.wstring_at(filename)
         if os.path.exists(file_p) and os.path.isfile(file_p):
-            print(ctypes.wstring_at(filename))
-            print(file_size.value)
-            file_name = file_name = os.path.basename(file_p)
+            #  print(ctypes.wstring_at(filename))
+            #  print(file_size.value)
+            file_name = os.path.basename(file_p)
             result_list.append({'file_path': file_p, 'size': file_size.value, 'filename': file_name})
     return result_list
 
@@ -164,5 +164,5 @@ def search_file_by_name_sdk(full_name):
 
 if __name__ == '__main__':
     # js = search_web_sdk('011614_738')
-    results = if_file_exist_with_size('JBD-240', 3000)
+    results = if_file_exist_with_size('sdsi-020', 100)
     print(results)

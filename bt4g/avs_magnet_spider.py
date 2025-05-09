@@ -125,6 +125,7 @@ def get_magnet_by_key(key_world, page):
     }
 
     response = requests.get('https://bt4gprx.com/search', params=params, cookies=cookies, headers=headers)
+
     return response.content
 
 
@@ -354,14 +355,4 @@ def get_magnet_by_id(av_id):
 
 
 if __name__ == "__main__":
-    for i in range(1, 1000):
-        id_str = ''
-        if i < 10:
-            id_str = '00' + str(i)
-        elif i < 100:
-            id_str = '0' + str(i)
-        else:
-            id_str = str(i)
-        key_world = 'juc-' + id_str
-        if not if_file_exist_with_size(key_world, 300):
-            get_magnet_by_id('juc-' + id_str)
+    wuqian_magnet('artofgloss',1)
